@@ -4,10 +4,11 @@ version = "0.0.1"
 dependencies = ["ndspy", "pandas"]
 
 [project.optional-dependencies]
-test = ["mypy==1.15", "ruff==0.11", "pytest", "pytest-cov"]
+test = ["mypy==1.15", "ruff==0.11", "pandas-stubs", "pytest", "pytest-cov"]
 
 [tool.mypy]
 strict = true
+exclude = ["build"]
 
 [tool.ruff]
 line-length = 100
