@@ -2,3 +2,11 @@
 An unofficial library for parsing a modifying data files from *Dragon Quest Monsters: Joker*.
 
 This library is a work in progress, so the API may change frequently.
+
+```python
+import dqmj1_util as dqm
+
+encounters = dqm.Rom("DQMJ1_NA.nds").load_btl_enmy_prm()
+
+print(encounters.entries[1].species_id)
+```
