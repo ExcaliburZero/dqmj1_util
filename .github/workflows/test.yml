@@ -41,7 +41,7 @@ jobs:
     - name: Run tests
       run: |
         make coverage_report
-        rm coverage.xml
+        rm coverage.xml # Since it reports with incorrect filepaths...
 
     - name: Coveralls
       uses: coverallsapp/github-action@v2
