@@ -1,0 +1,50 @@
+[project]
+name = "dqmj1_util"
+version = "0.0.1"
+dependencies = ["ndspy", "pandas"]
+
+[project.optional-dependencies]
+test = ["mypy==1.15", "ruff==0.11", "pytest", "pytest-cov"]
+
+[tool.mypy]
+strict = true
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "B",    # flake8-bugbear
+    "A",    # flake8-builtins
+    "C4",   # flake8-comprehensions
+    "T10",  # flake8-debugger
+    "ISC",  # flake8-implicit-str-concat
+    "ICN",  # flake8-import-conventions
+    "LOG",  # flake8-logging
+    "G",    # flake8-logging-format
+    "INP",  # flake8-no-pep420
+    "PIE",  # flake8-pie
+    "T20",  # flake8-print
+    "PYI",  # flake8-pyi
+    "Q",    # flake8-quotes
+    "RSE",  # flake8-raise
+    "RET",  # flake8-return
+    "SLF",  # flake8-self
+    "SIM",  # flake8-simplify
+    "SLOT", # flake8-slots
+    "TID",  # flake8-tidy-imports
+    "TC",   # flake8-type-checking
+    "PTH",  # flake8-use-pathlib
+    "FLY",  # flynt
+    "I",    # isort
+    "PD",   # pandas-vet
+    "N",    # pep8-naming
+    "PERF", # Perflint
+    "UP",   # pyupgrade
+    "FURB", # refurb
+    "RUF",  # Ruff-specific rule
+    "TRY",  # tryceratops
+]
+ignore = [
+    "PIE808", # Unnecessary `start` argument in `range`
+]
