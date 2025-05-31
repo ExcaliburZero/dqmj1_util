@@ -41,7 +41,13 @@ jobs:
     - name: Run tests
       run: |
         make coverage_report
-        rm coverage.xml # Since it reports with incorrect filepaths...
 
-    - name: Coveralls
+    - name: Coveralls coverage report
       uses: coverallsapp/github-action@v2
+
+    - name: Qlty coverage report
+      if: matrix.os == 'ubuntu-latest'
+      uses: qltysh/qlty-action/coverage@v1
+      with:
+        token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+        files: coverage.info

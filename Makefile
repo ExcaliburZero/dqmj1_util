@@ -13,4 +13,4 @@ test:
 	pytest tests
 
 coverage_report:
-	pytest --cov-report=html:coverage --cov-report=xml:coverage.xml --cov=dqmj1_util tests
+	pytest --cov-report=html:coverage --cov-report=lcov:coverage.info --cov=dqmj1_util tests
