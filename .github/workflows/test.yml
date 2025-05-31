@@ -40,4 +40,8 @@ jobs:
 
     - name: Run tests
       run: |
-        make test
+        make coverage_report
+        rm coverage.xml
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@v2
