@@ -15,6 +15,7 @@ line-length = 100
 
 [tool.ruff.lint]
 select = [
+    "S",    # flake8-bandit
     "B",    # flake8-bugbear
     "A",    # flake8-builtins
     "C4",   # flake8-comprehensions

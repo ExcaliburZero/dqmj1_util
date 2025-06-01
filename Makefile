@@ -5,9 +5,9 @@ format:
 	ruff format .
 	
 lint:
+	ruff check .
 	mypy .
 	ruff format --check .
-	ruff check .
 
 test:
 	pytest tests
