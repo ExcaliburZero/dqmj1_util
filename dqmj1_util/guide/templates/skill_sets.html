@@ -31,6 +31,7 @@
         ];
 
         const data = {{ skill_sets | tojson }};
+        console.log(data);
 
         for (let i = 0; i < data.length; i++) {
             let buffer = ["<ul>"];
@@ -41,7 +42,9 @@
                     buffer.push(": ");
 
                     if (data[i].rewards[j].skill) {
+                        buffer.push("<a href=\"{{ base_path }}skills/" + data[i].rewards[j].skill_id + ".html\">");
                         buffer.push(data[i].rewards[j].skill);
+                        buffer.push("</a>");
                     } else {
                         buffer.push(data[i].rewards[j].trait);
                     }

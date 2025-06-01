@@ -27,11 +27,11 @@ class SkillSet:
     species_learnt_by_ids: list[int]
 
     @staticmethod
-    def from_raw(i: int, raw: SkillTblEntry, string_tables: StringTables) -> SkillSet:
+    def from_raw(skill_set_id: int, raw: SkillTblEntry, string_tables: StringTables) -> SkillSet:
         params = vars(raw)
         params = {key: value for key, value in params.items() if not key.startswith("unknown")}
 
-        params["name"] = string_tables.skill_set_names[i]
+        params["name"] = string_tables.skill_set_names[skill_set_id]
         params["can_upgrade"] = raw.can_upgrade > 0
         params["species_learnt_by_ids"] = []
 
@@ -43,11 +43,11 @@ class SkillSet:
             trait_id = None
 
             if len(raw.skill_ids[i]) > 0:
-                skill_id = raw.skill_ids[i][-1]
+                skill_id = raw.skill_ids[i][0]
                 skill = string_tables.skill_names[skill_id]
 
             if len(raw.trait_ids[i]) > 0:
-                trait_id = raw.trait_ids[i][-1]
+                trait_id = raw.trait_ids[i][0]
                 trait = string_tables.trait_names[trait_id]
 
             params["rewards"].append(

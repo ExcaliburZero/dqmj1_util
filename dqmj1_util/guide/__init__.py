@@ -8,6 +8,7 @@ from typing import Any
 
 from dqmj1_util.rom import Rom
 from dqmj1_util.simple.encounter import Encounter
+from dqmj1_util.simple.skill import Skill
 from dqmj1_util.simple.skill_set import SkillSet
 
 SUCCESS = 0
@@ -21,8 +22,12 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
     skill_sets_directory = output_directory / "skill_sets"
     skill_sets_directory.mkdir(exist_ok=True)
 
-    encounters = rom.load_encounters()
+    skills_directory = output_directory / "skills"
+    skills_directory.mkdir(exist_ok=True)
+
+    skills = rom.load_skills()
     skill_sets = rom.load_skill_sets()
+    encounters = rom.load_encounters()
 
     import jinja2 as j2
 
@@ -31,11 +36,14 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
         autoescape=j2.select_autoescape(),
     )
     index_template = env.get_template("index.html")
+    skills_template = env.get_template("skills.html")
     skill_sets_template = env.get_template("skill_sets.html")
     encounters_template = env.get_template("encounters.html")
 
+    skill_template = env.get_template("skill.html")
     skill_set_template = env.get_template("skill_set.html")
 
+    processed_skills = process_skills(skills, skill_sets)
     processed_encounters = process_encounters(encounters)
     processed_skill_sets = process_skill_sets(skill_sets)
 
@@ -44,6 +52,16 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
         output_stream.write(
             index_template.render(
                 title="DQMJ1 Guide",
+                base_path="",
+            )
+        )
+
+    skills_filepath = output_directory / "skills.html"
+    with skills_filepath.open("w", encoding="utf8") as output_stream:
+        output_stream.write(
+            skills_template.render(
+                title="DQMJ1 - Skills",
+                skills=processed_skills,
                 base_path="",
             )
         )
@@ -67,6 +85,17 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
                 base_path="",
             )
         )
+
+    for skill in processed_skills:
+        skill_filepath = skills_directory / f"{skill['id']}.html"
+        with skill_filepath.open("w", encoding="utf8") as output_stream:
+            output_stream.write(
+                skill_template.render(
+                    title=f"DQMJ1 - {skill['name']}",
+                    skill=skill,
+                    base_path="../",
+                )
+            )
 
     for skill_set in processed_skill_sets:
         skill_set_filepath = skill_sets_directory / f"{skill_set['id']}.html"
@@ -111,6 +140,33 @@ def process_encounters(encounters: list[Encounter]) -> list[dict[str, Any]]:
         processed.append(after)
 
     return processed[1:858]
+
+
+def process_skills(skills: list[Skill], skill_sets: list[SkillSet]) -> list[dict[str, Any]]:
+    processed: list[dict[str, Any]] = []
+    for i, skill in enumerate(skills):
+        after = asdict(skill)
+
+        after["id"] = i
+        after["skill_sets"] = []
+
+        processed.append(after)
+
+    for skill_set_id, skill_set in enumerate(skill_sets):
+        for reward in skill_set.rewards:
+            if reward.skill is not None:
+                if reward.skill_id is None:
+                    raise AssertionError
+
+                processed[reward.skill_id]["skill_sets"].append(
+                    {
+                        "id": skill_set_id,
+                        "name": skill_set.name,
+                        "skill_point_requirement": reward.skill_point_requirement,
+                    }
+                )
+
+    return processed
 
 
 def process_skill_sets(skill_sets: list[SkillSet]) -> list[dict[str, Any]]:

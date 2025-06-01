@@ -15,7 +15,7 @@
                     {% if reward.skill %}
                     <tr>
                         <td>{{ reward.skill_point_requirement }}</td>
-                        <td>{{ reward.skill }}</td>
+                        <td><a href="{{ base_path }}skills/{{reward.skill_id}}.html">{{ reward.skill }}</a></td>
                     </tr>
                     {% endif %}
                     {% if reward.trait %}

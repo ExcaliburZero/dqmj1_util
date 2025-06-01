@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h2>{{ skill.name }}</h2>
+        <h3>Skill sets</h3>
+        <div class="page-content">
+            <div class="simple-table">
+                <table style="max-width: 300px;">
+                    <tr>
+                        <th>Skill set</th>
+                        <th>Points</th>
+                    </tr>
+                    {% for skill_set in skill.skill_sets %}
+                    <tr>
+                        <td><a href="{{ base_path }}skill_sets/{{ skill_set.id }}.html">{{ skill_set.name }}</a></td>
+                        <td>{{ skill_set.skill_point_requirement }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

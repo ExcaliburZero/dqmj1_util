@@ -9,6 +9,7 @@ from dqmj1_util.raw.btl_enmy_prm import BtlEnmyPrm
 from dqmj1_util.raw.skill_tbl import SkillTbl
 from dqmj1_util.region import Region
 from dqmj1_util.simple.encounter import Encounter
+from dqmj1_util.simple.skill import Skill
 from dqmj1_util.simple.skill_set import SkillSet
 from dqmj1_util.string_tables import StringTables
 
@@ -59,3 +60,6 @@ class Rom:
             SkillSet.from_raw(i, entry, self.string_tables)
             for i, entry in enumerate(skill_tbl.entries)
         ]
+
+    def load_skills(self) -> list[Skill]:
+        return [Skill.from_raw(i, self.string_tables) for i in range(0, 285)]
