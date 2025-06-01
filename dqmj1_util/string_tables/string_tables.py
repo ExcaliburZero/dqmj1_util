@@ -13,6 +13,7 @@ class StringTables:
     species_names: list[str]
     skill_names: list[str]
     skill_set_names: list[str]
+    item_names: list[str]
 
     @staticmethod
     def from_rom(rom: ndspy.rom.NintendoDSRom, region: Region) -> StringTables:

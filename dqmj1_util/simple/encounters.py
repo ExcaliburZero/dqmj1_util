@@ -16,6 +16,8 @@ class Encounter:
     species_id: int
     skills: list[str]
     skill_ids: list[int]
+    item_drops: list[str]
+    item_drop_item_ids: list[int]
     gold: int
     exp: int
     level: int
@@ -36,6 +38,7 @@ class Encounter:
 
         raw_skills = Encounter._unique_objects(raw.skills)
         raw_skill_set_ids = Encounter._unique_values(raw.skill_set_ids)
+        raw_item_drops = [item_drop for item_drop in raw.item_drops if item_drop.item_id != 0]
 
         params["species"] = string_tables.species_names[raw.species_id]
         params["skills"] = [string_tables.skill_names[skill.skill_id] for skill in raw_skills]
@@ -44,8 +47,11 @@ class Encounter:
             string_tables.skill_set_names[skill_set_id] for skill_set_id in raw_skill_set_ids
         ]
         params["skill_set_ids"] = raw_skill_set_ids.copy()
-
-        del params["item_drops"]
+        params["item_drops"] = [
+            f"{string_tables.item_names[item_drop.item_id]} {(1.0 / 2**item_drop.chance_denominator_2_power) * 100.0}%"
+            for item_drop in raw_item_drops
+        ]
+        params["item_drop_item_ids"] = [item_drop.item_id for item_drop in raw_item_drops]
 
         return Encounter(**params)
 
