@@ -2,7 +2,55 @@
 {% block content %}
 <div class="container">
   <div class="row table-responsive">
-    <h3 id="_items">Items</h3>
+    <h3 id="skill-sets">Skill sets</h3>
+    <table class="table" data-toggle="table">
+      <thead>
+        <tr>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Id</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Name</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Rewards</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Can upgrade?</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for skill_set in skill_sets %}
+        <tr id="skill-set-{{ skill_set.id }}">
+          <td style="white-space: nowrap;">
+            {{ skill_set.id }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ skill_set.name }}
+          </td>
+          <td style="white-space: nowrap;">
+          <ul>
+          {% for reward in skill_set.rewards %}
+          {% if reward.skill or reward.trait %}
+            <li>
+                {{ reward.skill_point_requirement }}:
+                {% if reward.skill %}
+                {{ reward.skill }}
+                {% else %}
+                {{ reward.trait }}
+                {% endif %}
+            </li>
+          {% endif %}
+          {% endfor %}
+          </ul>
+          </td>
+          <td style="white-space: nowrap;">
+            {{ skill_set.can_upgrade }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ skill_set.category }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="row table-responsive">
+    <h3 id="encounters">Encounters</h3>
     <table class="table" data-toggle="table">
       <thead>
         <tr>

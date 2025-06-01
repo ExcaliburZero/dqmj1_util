@@ -58,5 +58,6 @@ class TableLocation:
 class StringTableLocations:
     species_names: TableLocation
     skill_names: TableLocation
+    trait_names: TableLocation
     skill_set_names: TableLocation
     item_names: TableLocation

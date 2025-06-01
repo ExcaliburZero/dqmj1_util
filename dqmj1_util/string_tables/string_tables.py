@@ -12,6 +12,7 @@ from dqmj1_util.string_tables.locations import STRING_TABLE_LOCATIONS
 class StringTables:
     species_names: list[str]
     skill_names: list[str]
+    trait_names: list[str]
     skill_set_names: list[str]
     item_names: list[str]
 
