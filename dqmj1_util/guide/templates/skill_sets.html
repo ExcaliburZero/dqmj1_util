@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row table-responsive">
+        <h2>Skill sets</h2>
+        <table id="skill-sets-table" class="table" data-toggle="table"></table>
+    </div>
+</div>
+<script>
+    "use strict";
+    const $table = $('#skill-sets-table');
+
+    function buildTable($el, cells, rows) {
+        let row;
+        const columns = [
+            {
+                field: 'id',
+                title: 'Id',
+                sortable: true
+            },
+            {
+                field: 'name',
+                title: 'Name',
+                sortable: true
+            },
+            {
+                field: 'rewards_html',
+                title: 'Rewards',
+                sortable: true
+            },
+        ];
+
+        const data = {{ skill_sets | tojson }};
+
+        for (let i = 0; i < data.length; i++) {
+            let buffer = ["<ul>"];
+            for (let j = 0; j < data[i].rewards.length; j++) {
+                if (data[i].rewards[j].skill || data[i].rewards[j].trait) {
+                    buffer.push("<li>");
+                    buffer.push(data[i].rewards[j].skill_point_requirement);
+                    buffer.push(": ");
+
+                    if (data[i].rewards[j].skill) {
+                        buffer.push(data[i].rewards[j].skill);
+                    } else {
+                        buffer.push(data[i].rewards[j].trait);
+                    }
+
+                    buffer.push("</li>");
+                }
+            }
+            buffer.push("</ul>");
+            data[i].rewards_html = buffer.join("");
+        }
+
+        $el.bootstrapTable('destroy').bootstrapTable({
+            columns,
+            data,
+            search: true,
+            stickyHeader: true,
+        })
+    }
+
+    $(function () {
+        buildTable($table, 20, 50)
+    })
+</script>
+{% endblock %}

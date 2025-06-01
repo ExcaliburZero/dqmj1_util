@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row table-responsive">
+        <h2>Encounters</h2>
+        <table id="encounters-table" class="table" data-toggle="table"></table>
+    </div>
+</div>
+<script>
+    "use strict";
+    const $table = $('#encounters-table');
+
+    function buildTable($el, cells, rows) {
+        let row;
+        const columns = [
+            {
+                field: 'id',
+                title: 'Id',
+                sortable: true
+            },
+            {
+                field: 'species',
+                title: 'Species',
+                sortable: true
+            },
+            {
+                field: 'level',
+                title: 'Level',
+                sortable: true
+            },
+            {
+                field: 'exp',
+                title: 'Experience',
+                sortable: true
+            },
+            {
+                field: 'gold',
+                title: 'Gold',
+                sortable: true
+            },
+            {
+                field: 'scout_chance',
+                title: 'Scout chance',
+                sortable: true
+            },
+            {
+                field: 'max_hp',
+                title: 'Max HP',
+                sortable: true
+            },
+            {
+                field: 'max_mp',
+                title: 'Max MP',
+                sortable: true
+            },
+            {
+                field: 'attack',
+                title: 'Attack',
+                sortable: true
+            },
+            {
+                field: 'defense',
+                title: 'Defense',
+                sortable: true
+            },
+            {
+                field: 'agility',
+                title: 'Agility',
+                sortable: true
+            },
+            {
+                field: 'wisdom',
+                title: 'Wisdom',
+                sortable: true
+            },
+            {
+                field: 'skills_html',
+                title: 'Skills',
+                sortable: true
+            },
+            {
+                field: 'skill_sets_html',
+                title: 'Skill sets',
+                sortable: true
+            },
+        ];
+
+        const data = {{ encounters | tojson }};
+        console.log(data);
+
+        for (let i = 0; i < data.length; i++) {
+            let buffer = ["<ul>"];
+            for (let j = 0; j < data[i].skills.length; j++) {
+                buffer.push("<li>");
+                buffer.push(data[i].skills[j].name);
+                buffer.push("</li>");
+            }
+            buffer.push("</ul>");
+            data[i].skills_html = buffer.join("");
+
+            buffer = ["<ul>"];
+            for (let j = 0; j < data[i].skill_sets.length; j++) {
+                buffer.push("<li>");
+                //buffer.push("<a href=\"skill_sets.html#skill-set-" + data[i].skill_sets[j].id + "\">");
+                buffer.push(data[i].skill_sets[j].name);
+                //buffer.push("</a>");
+                buffer.push("</li>");
+            }
+            buffer.push("</ul>");
+            data[i].skill_sets_html = buffer.join("");
+        }
+
+        $el.bootstrapTable('destroy').bootstrapTable({
+            columns,
+            data,
+            search: true,
+            stickyHeader: true,
+        })
+    }
+
+    $(function () {
+        buildTable($table, 20, 50)
+    })
+</script>
+{% endblock %}

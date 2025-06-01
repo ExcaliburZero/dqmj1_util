@@ -28,23 +28,35 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
         autoescape=j2.select_autoescape(),
     )
     index_template = env.get_template("index.html")
-
-    index_filepath = output_directory / "index.html"
+    skill_sets_template = env.get_template("skill_sets.html")
+    encounters_template = env.get_template("encounters.html")
 
     processed_encounters = process_encounters(encounters)
     processed_skill_sets = process_skill_sets(skill_sets)
 
-    encounters_filepath = output_directory / "encounters.json"
-
-    with encounters_filepath.open("w", encoding="utf8") as output_stream:
-        json.dump(processed_encounters, output_stream)
-
+    index_filepath = output_directory / "index.html"
     with index_filepath.open("w", encoding="utf8") as output_stream:
         output_stream.write(
             index_template.render(
                 title="DQMJ1 Guide",
-                encounters=processed_encounters,
+            )
+        )
+
+    skill_sets_filepath = output_directory / "skill_sets.html"
+    with skill_sets_filepath.open("w", encoding="utf8") as output_stream:
+        output_stream.write(
+            skill_sets_template.render(
+                title="DQMJ1 - Skill Sets",
                 skill_sets=processed_skill_sets,
+            )
+        )
+
+    encounters_filepath = output_directory / "encounters.html"
+    with encounters_filepath.open("w", encoding="utf8") as output_stream:
+        output_stream.write(
+            encounters_template.render(
+                title="DQMJ1 - Encounters",
+                encounters=processed_encounters,
             )
         )
 
