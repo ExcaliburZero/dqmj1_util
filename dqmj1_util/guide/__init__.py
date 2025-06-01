@@ -5,8 +5,6 @@ import sys
 from dataclasses import asdict, dataclass
 from typing import Any
 
-import jinja2 as j2
-
 from dqmj1_util.rom import Rom
 from dqmj1_util.simple.encounter import Encounter
 
@@ -19,6 +17,8 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
     output_directory.mkdir(exist_ok=True)
 
     encounters = rom.load_encounters()
+
+    import jinja2 as j2
 
     env = j2.Environment(
         loader=j2.PackageLoader("dqmj1_util.guide"),
