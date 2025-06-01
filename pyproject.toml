@@ -48,4 +48,8 @@ select = [
 ]
 ignore = [
     "PIE808", # Unnecessary `start` argument in `range`
+    "RET505", # Unnecessary `elif` after `return` statement
+    "RET507", # Unnecessary `elif` after `continue` statement
+    "TC001",  # Move application import into a type-checking block
+    "TC002",  # Move third-party import into a type-checking block
 ]
