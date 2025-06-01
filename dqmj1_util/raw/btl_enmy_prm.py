@@ -157,7 +157,7 @@ class BtlEnmyPrm:
 
     @staticmethod
     def from_bin(input_stream: IO[bytes]) -> "BtlEnmyPrm":
-        int.from_bytes(input_stream.read(4), ENDIANESS)
+        input_stream.read(4)
         length = int.from_bytes(input_stream.read(4), ENDIANESS)
 
         entries = [BtlEnmyPrmEntry.from_bin(input_stream) for _ in range(0, length)]
