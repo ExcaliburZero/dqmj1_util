@@ -26,25 +26,31 @@ class Encounter:
     defense: int
     agility: int
     wisdom: int
+    skill_sets: list[str]
+    skill_set_ids: list[int]
 
     @staticmethod
     def from_raw(raw: BtlEnmyPrmEntry, string_tables: StringTables) -> Encounter:
         params = vars(raw)
         params = {key: value for key, value in params.items() if not key.startswith("unknown")}
 
-        raw_skills = Encounter._unique(raw.skills)
+        raw_skills = Encounter._unique_objects(raw.skills)
+        raw_skill_set_ids = Encounter._unique_values(raw.skill_set_ids)
 
         params["species"] = string_tables.species_names[raw.species_id]
         params["skills"] = [string_tables.skill_names[skill.skill_id] for skill in raw_skills]
         params["skill_ids"] = [skill.skill_id for skill in raw_skills]
+        params["skill_sets"] = [
+            string_tables.skill_set_names[skill_set_id] for skill_set_id in raw_skill_set_ids
+        ]
+        params["skill_set_ids"] = raw_skill_set_ids.copy()
 
         del params["item_drops"]
-        del params["skill_set_ids"]
 
         return Encounter(**params)
 
     @staticmethod
-    def _unique(l: Iterable[T]) -> list[T]:
+    def _unique_objects(l: Iterable[T]) -> list[T]:
         """
         Returns only the unique items in the given iterable. Specifically preserves order.
         """
@@ -57,6 +63,22 @@ class Encounter:
                 continue
 
             found.append(key)
+            output_list.append(e)
+
+        return output_list
+
+    @staticmethod
+    def _unique_values(l: Iterable[T]) -> list[T]:
+        """
+        Returns only the unique items in the given iterable. Specifically preserves order.
+        """
+        output_list = []
+        found = set()
+        for e in l:
+            if e in found:
+                continue
+
+            found.add(e)
             output_list.append(e)
 
         return output_list
