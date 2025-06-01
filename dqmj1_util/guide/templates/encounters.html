@@ -92,7 +92,9 @@
             let buffer = ["<ul>"];
             for (let j = 0; j < data[i].skills.length; j++) {
                 buffer.push("<li>");
+                buffer.push("<a href=\"skills/" + data[i].skills[j].id + ".html\">");
                 buffer.push(data[i].skills[j].name);
+                buffer.push("</a>");
                 buffer.push("</li>");
             }
             buffer.push("</ul>");
