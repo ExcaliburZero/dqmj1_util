@@ -6,7 +6,8 @@ This library is a work in progress, so the API may change frequently.
 ```python
 import dqmj1_util as dqmj
 
-encounters = dqmj.Rom("DQMJ1_NA.nds").load_btl_enmy_prm()
+encounters = dqmj.Rom("DQMJ1_NA.nds").load_encounters()
 
-print(encounters.entries[1].species_id)
+print(encounters[1].species)
+print(encounters[1].species_id)
 ```
