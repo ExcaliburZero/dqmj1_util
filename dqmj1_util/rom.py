@@ -6,8 +6,8 @@ from typing import Any, Optional
 import ndspy.rom
 
 from dqmj1_util.raw.btl_enmy_prm import BtlEnmyPrm
-from dqmj1_util.regions import Region
-from dqmj1_util.simple.encounters import Encounter
+from dqmj1_util.region import Region
+from dqmj1_util.simple.encounter import Encounter
 from dqmj1_util.string_tables import StringTables
 
 BTL_ENMY_PRM_PATH = "BtlEnmyPrm.bin"

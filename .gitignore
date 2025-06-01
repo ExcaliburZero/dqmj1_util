@@ -1,6 +1,7 @@
 .~lock.*#
 /testing.py
 /encounters.csv
+/output
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

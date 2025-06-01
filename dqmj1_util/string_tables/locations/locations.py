@@ -4,7 +4,7 @@ from typing import Literal
 import ndspy.rom
 
 from dqmj1_util.character_encoding import CHARACTER_ENCODINGS
-from dqmj1_util.regions import Region
+from dqmj1_util.region import Region
 
 ENDIANESS: Literal["little"] = "little"
 
@@ -34,7 +34,7 @@ class TableLocation:
 
         string_pointers = []
         current = start
-        while current <= end:
+        while current < end:
             string_pointers.append(
                 int.from_bytes(data[current : current + POINTER_SIZE], ENDIANESS)
             )

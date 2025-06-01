@@ -1,7 +1,7 @@
 import unittest
 
 from dqmj1_util.character_encoding import CHARACTER_ENCODINGS
-from dqmj1_util.regions import Region
+from dqmj1_util.region import Region
 
 
 class TestCharacterEncoding(unittest.TestCase):
