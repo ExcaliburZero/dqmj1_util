@@ -30,7 +30,7 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
 
     processed_encounters = process_encounters(encounters)
 
-    with index_filepath.open("w") as output_stream:
+    with index_filepath.open("w", encoding="utf8") as output_stream:
         output_stream.write(
             index_template.render(
                 title="DQMJ1 Guide",
@@ -41,9 +41,10 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
 
 def process_encounters(encounters: list[Encounter]) -> list[dict[str, Any]]:
     processed = []
-    for encounter in encounters:
+    for i, encounter in enumerate(encounters):
         after = asdict(encounter)
 
+        after["id"] = i
         after["skills"] = [
             {
                 "name": encounter.skills[i],
@@ -58,10 +59,17 @@ def process_encounters(encounters: list[Encounter]) -> list[dict[str, Any]]:
             }
             for i in range(0, len(encounter.item_drops))
         ]
+        after["skill_sets"] = [
+            {
+                "name": encounter.skill_sets[i],
+                "id": encounter.skill_set_ids[i],
+            }
+            for i in range(0, len(encounter.skill_set_ids))
+        ]
 
         processed.append(after)
 
-    return processed[:858]
+    return processed[1:858]
 
 
 @dataclass(frozen=True)

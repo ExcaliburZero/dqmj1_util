@@ -37,7 +37,11 @@ class Encounter:
         params = {key: value for key, value in params.items() if not key.startswith("unknown")}
 
         raw_skills = Encounter._unique_objects(raw.skills)
-        raw_skill_set_ids = Encounter._unique_values(raw.skill_set_ids)
+        raw_skill_set_ids = [
+            skill_set_id
+            for skill_set_id in Encounter._unique_values(raw.skill_set_ids)
+            if skill_set_id != 0
+        ]
         raw_item_drops = [item_drop for item_drop in raw.item_drops if item_drop.item_id != 0]
 
         params["species"] = string_tables.species_names[raw.species_id]

@@ -6,15 +6,60 @@
     <table class="table" data-toggle="table">
       <thead>
         <tr>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Id</th>
           <th style="white-space: nowrap;" scope="col" data-sortable="true">Species</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Gold</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Experience</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Level</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Scout chance</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Max HP</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Max MP</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Attack</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Defense</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Agility</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Wisdom</th>
           <th style="white-space: nowrap;" scope="col" data-sortable="true">Skills</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Item Drops</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Item drops</th>
+          <th style="white-space: nowrap;" scope="col" data-sortable="true">Skill sets</th>
         </tr>
       </thead>
       <tbody>
         {% for encounter in encounters %}
         <tr>
-          <td style="white-space: nowrap;"><a href="">{{ encounter.species }}</a></td>
+          <td style="white-space: nowrap;">
+            {{ encounter.id }}
+          </td>
+          <td style="white-space: nowrap;"><a href="#species-{{ encounter.species_id }}">{{ encounter.species }}</a></td>
+          <td style="white-space: nowrap;">
+            {{ encounter.gold }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ encounter.exp }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ encounter.level }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ encounter.scout_chance }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ encounter.max_hp }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ encounter.max_mp }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ encounter.attack }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ encounter.defense }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ encounter.agility }}
+          </td>
+          <td style="white-space: nowrap;">
+            {{ encounter.wisdom }}
+          </td>
           <td style="white-space: nowrap;">
             {% for skill in encounter.skills %}
                 <a href="#skill-{{ skill.id }}">{{ skill.name }}</a>,&nbsp;
@@ -23,6 +68,11 @@
           <td style="white-space: nowrap;">
             {% for item_drop in encounter.item_drops %}
                 <a href="#item-{{ item_drop.id }}">{{ item_drop.name }}</a>,&nbsp;
+            {% endfor %}
+          </td>
+          <td style="white-space: nowrap;">
+            {% for skill_set in encounter.skill_sets %}
+                <a href="#skill-set-{{ skill_set.id }}">{{ skill_set.name }}</a>,&nbsp;
             {% endfor %}
           </td>
         </tr>
