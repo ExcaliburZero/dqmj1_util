@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 import argparse
-import json
 import os
 import pathlib
 import sys
@@ -15,9 +16,9 @@ SUCCESS = 0
 FAILURE = 1
 
 
-def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
+def write_guide(guide_data: GuideData, output_directory: os.PathLike[Any] | str) -> None:
     output_directory = pathlib.Path(output_directory)
-    output_directory.mkdir(exist_ok=True)
+    output_directory.mkdir(exist_ok=True, parents=True)
 
     skill_sets_directory = output_directory / "skill_sets"
     skill_sets_directory.mkdir(exist_ok=True)
@@ -25,9 +26,9 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
     skills_directory = output_directory / "skills"
     skills_directory.mkdir(exist_ok=True)
 
-    skills = rom.load_skills()
-    skill_sets = rom.load_skill_sets()
-    encounters = rom.load_encounters()
+    skills = guide_data.skills
+    skill_sets = guide_data.skill_sets
+    encounters = guide_data.encounters
 
     import jinja2 as j2
 
@@ -181,6 +182,13 @@ def process_skill_sets(skill_sets: list[SkillSet]) -> list[dict[str, Any]]:
     return processed[1:-1]
 
 
+@dataclass
+class GuideData:
+    skills: list[Skill]
+    skill_sets: list[SkillSet]
+    encounters: list[Encounter]
+
+
 @dataclass(frozen=True)
 class Args:
     rom_filepath: pathlib.Path
@@ -195,7 +203,15 @@ def main(argv: list[str]) -> int:
 
     args = Args(**vars(parser.parse_args(argv)))
 
-    write_guide(Rom(args.rom_filepath), args.output_directory)
+    rom = Rom(args.rom_filepath)
+
+    guide_data = GuideData(
+        skills=rom.load_skills(),
+        skill_sets=rom.load_skill_sets(),
+        encounters=rom.load_encounters(),
+    )
+
+    write_guide(guide_data, args.output_directory)
 
     return SUCCESS
 
