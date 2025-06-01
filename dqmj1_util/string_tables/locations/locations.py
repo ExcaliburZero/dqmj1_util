@@ -57,3 +57,4 @@ class TableLocation:
 @dataclass
 class StringTableLocations:
     species_names: TableLocation
+    skill_names: TableLocation
