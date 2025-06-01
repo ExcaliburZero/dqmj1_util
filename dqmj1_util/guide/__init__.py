@@ -18,6 +18,9 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
     output_directory = pathlib.Path(output_directory)
     output_directory.mkdir(exist_ok=True)
 
+    skill_sets_directory = output_directory / "skill_sets"
+    skill_sets_directory.mkdir(exist_ok=True)
+
     encounters = rom.load_encounters()
     skill_sets = rom.load_skill_sets()
 
@@ -30,6 +33,8 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
     index_template = env.get_template("index.html")
     skill_sets_template = env.get_template("skill_sets.html")
     encounters_template = env.get_template("encounters.html")
+
+    skill_set_template = env.get_template("skill_set.html")
 
     processed_encounters = process_encounters(encounters)
     processed_skill_sets = process_skill_sets(skill_sets)
@@ -59,6 +64,16 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
                 encounters=processed_encounters,
             )
         )
+
+    for skill_set in processed_skill_sets:
+        skill_set_filepath = skill_sets_directory / f"{skill_set['id']}.html"
+        with skill_set_filepath.open("w", encoding="utf8") as output_stream:
+            output_stream.write(
+                skill_set_template.render(
+                    title=f"DQMJ1 - {skill_set['name']}",
+                    skill_set=skill_set,
+                )
+            )
 
 
 def process_encounters(encounters: list[Encounter]) -> list[dict[str, Any]]:

@@ -101,9 +101,9 @@
             buffer = ["<ul>"];
             for (let j = 0; j < data[i].skill_sets.length; j++) {
                 buffer.push("<li>");
-                //buffer.push("<a href=\"skill_sets.html#skill-set-" + data[i].skill_sets[j].id + "\">");
+                buffer.push("<a href=\"skill_sets/" + data[i].skill_sets[j].id + ".html\">");
                 buffer.push(data[i].skill_sets[j].name);
-                //buffer.push("</a>");
+                buffer.push("</a>");
                 buffer.push("</li>");
             }
             buffer.push("</ul>");

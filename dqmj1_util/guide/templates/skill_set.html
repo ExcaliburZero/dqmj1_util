@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h2>{{ skill_set.name }}</h2>
+        <h3>Rewards</h3>
+        <ul>
+            {% for reward in skill_set.rewards %}
+            {% if reward.skill %}
+            <li>{{ reward.skill_point_requirement }}: {{ reward.skill }}</li>
+            {% endif %}
+            {% if reward.trait %}
+            <li>{{ reward.skill_point_requirement }}: {{ reward.trait }}</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
