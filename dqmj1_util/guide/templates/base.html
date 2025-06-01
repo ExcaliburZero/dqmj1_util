@@ -11,6 +11,7 @@
     <style>
         body {
             font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lato', 'Liberation Sans', 'Noto Sans', 'Helvetica Neue', 'Helvetica', sans-serif;
+            background-color: #101849;
         }
 
         main {
@@ -18,28 +19,34 @@
         }
 
         a {
-            color: #7629db;
+            color: #fbfa40;
             text-decoration: none;
         }
 
         a:hover {
-            color: #382376;
+            color: #929347;
         }
 
         a[href*='//'] {
-            color: #5d6abd;
+            color: #fbfa40;
         }
 
         a[href*='//']:hover {
-            color: #2c41bd;
+            color: #929347;
+        }
+
+        h2 {
+            color: #ffffff;
         }
 
         h3 {
             padding-top: 20px;
+            padding-bottom: 20px;
+            color: #ffffff;
         }
 
         .topbar {
-            background-color: #ab75e8;
+            background-color: #202020;
             padding-bottom: 8px;
         }
 
@@ -48,11 +55,21 @@
         }
 
         .sidebar {
-            background-color: #ffffff;
-            border-left: 10px solid #ab75e8;
-            border-right: 10px solid #ab75e8;
-            border-top: 10px solid #ab75e8;
             padding: 0px;
+        }
+
+        .sidebar-wrapper {
+            padding-top: 14px;
+            padding-left: 14px;
+            padding-right: 14px;
+        }
+
+        .sidebar-main {
+            padding-top: 14px;
+            padding-bottom: 14px;
+            background-color: #202020;
+            border: 2px solid #cccccc;
+            border-radius: 10px;
         }
 
         a.sidebar-root-link {
@@ -70,15 +87,12 @@
         }
 
         .sidebar-root {
-            background-color: #ab75e8;
-            margin-top: 14px;
-            margin-right: 10px;
-            -webkit-clip-path: polygon(0 0, 100% 0%, 80% 100%, 0% 100%);
-            clip-path: polygon(0 0, 100% 0%, 80% 100%, 0% 100%);
+            background-color: #202020;
+            padding-left: 30px !important;
         }
 
         .sidebar-root:hover {
-            background-color: #3fbb9f;
+            background-color: #361e42;
         }
 
         .sidebar-sub {
@@ -87,12 +101,55 @@
             padding-left: 20px !important;
         }
 
-        .sidebar-sub:hover {
-            background-color: #3fbb9f;
-        }
-
         .page-content {
             padding-left: 20px;
+        }
+
+        .simple-table {
+            background-color: #202020;
+            border: 1px solid #cccccc !important;
+            border-radius: 10px;
+            color: #ffffff;
+            display: inline-block;
+            padding: 5px;
+        }
+
+        .simple-table th {
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .simple-table td {
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .table {
+            background-color: #202020 !important;
+            color: #ffffff;
+        }
+
+        .table th {
+            background-color: #202020 !important;
+            color: #ffffff;
+        }
+
+        .table td {
+            background-color: #202020 !important;
+            color: #ffffff;
+        }
+
+        input {
+            background-color: #202020 !important;
+            color: #ffffff !important;
+        }
+
+        ::placeholder {
+            color: #ffffff !important;
         }
     </style>
 </head>
@@ -108,11 +165,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-2 d-none d-lg-block min-vh-100 sidebar">
-                <div class="list-unstyled border-0 p-2 sidebar-root" style="cursor: pointer;" onclick="window.location='{{ base_path }}skill_sets.html'">
-                    <a href="{{ base_path }}skill_sets.html" class="sidebar-root-link">Skill sets</a>
-                </div>
-                <div class="list-unstyled border-0 p-2 sidebar-root" style="cursor: pointer;" onclick="window.location='{{ base_path }}encounters.html'">
-                    <a href="{{ base_path }}encounters.html" class="sidebar-root-link">Encounters</a>
+                <div class="sticky-top sidebar-wrapper">
+                    <div class="sidebar-main">
+                        <div class="list-unstyled border-0 p-2 sidebar-root" style="cursor: pointer;" onclick="window.location='{{ base_path }}skill_sets.html'">
+                            <a href="{{ base_path }}skill_sets.html" class="sidebar-root-link">Skill sets</a>
+                        </div>
+                        <div class="list-unstyled border-0 p-2 sidebar-root" style="cursor: pointer;" onclick="window.location='{{ base_path }}encounters.html'">
+                            <a href="{{ base_path }}encounters.html" class="sidebar-root-link">Encounters</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-12 col-lg-10 d-flex flex-column min-vh-100">
