@@ -44,6 +44,7 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
         output_stream.write(
             index_template.render(
                 title="DQMJ1 Guide",
+                base_path="",
             )
         )
 
@@ -53,6 +54,7 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
             skill_sets_template.render(
                 title="DQMJ1 - Skill Sets",
                 skill_sets=processed_skill_sets,
+                base_path="",
             )
         )
 
@@ -62,6 +64,7 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
             encounters_template.render(
                 title="DQMJ1 - Encounters",
                 encounters=processed_encounters,
+                base_path="",
             )
         )
 
@@ -72,6 +75,7 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
                 skill_set_template.render(
                     title=f"DQMJ1 - {skill_set['name']}",
                     skill_set=skill_set,
+                    base_path="../",
                 )
             )
 

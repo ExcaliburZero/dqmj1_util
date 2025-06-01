@@ -19,7 +19,7 @@
                 sortable: true
             },
             {
-                field: 'name',
+                field: 'name_html',
                 title: 'Name',
                 sortable: true
             },
@@ -51,6 +51,9 @@
             }
             buffer.push("</ul>");
             data[i].rewards_html = buffer.join("");
+
+            buffer = ["<a href=\"{{ base_path }}skill_sets/" + data[i].id + ".html\">", data[i].name, "</a>"]
+            data[i].name_html = buffer.join("");
         }
 
         $el.bootstrapTable('destroy').bootstrapTable({
