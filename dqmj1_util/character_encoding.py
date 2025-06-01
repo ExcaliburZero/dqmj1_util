@@ -13,6 +13,11 @@ class Dmqj1BytesToStringDecodingError(ValueError):
         super().__init__(f"Failed to convert bytes {[hex(byte) for byte in bs]} to a string.")
 
 
+class GetBytesMatchError(AssertionError):
+    def __init__(self, a: list[int] | bytes, b: list[int] | bytes):
+        super().__init__(f"{a!r} != {b!r}")
+
+
 class CharacterEncoding:
     def __init__(
         self,
@@ -107,9 +112,8 @@ class CharacterEncoding:
         if len(matches) == 0 or (len(matches) == 1 and len(matches[0][0]) <= offset):
             return "[" + hex(bs[i]) + "]", i + 1
         elif len(matches) == 1:
-            assert matches[0][0] == bs[i : i + offset], (
-                f"{matches[0][0]!r} != {bs[i : i + offset]!r}"
-            )
+            if matches[0][0] != bs[i : i + offset]:
+                raise GetBytesMatchError(matches[0][0], bs[i : i + offset])
 
             return matches[0][1], i + offset
         else:
