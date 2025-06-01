@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 import pathlib
 import sys
@@ -32,6 +33,11 @@ def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
 
     processed_encounters = process_encounters(encounters)
     processed_skill_sets = process_skill_sets(skill_sets)
+
+    encounters_filepath = output_directory / "encounters.json"
+
+    with encounters_filepath.open("w", encoding="utf8") as output_stream:
+        json.dump(processed_encounters, output_stream)
 
     with index_filepath.open("w", encoding="utf8") as output_stream:
         output_stream.write(

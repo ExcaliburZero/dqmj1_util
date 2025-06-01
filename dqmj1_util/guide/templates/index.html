@@ -1,132 +1,159 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-  <div class="row table-responsive">
-    <h3 id="skill-sets">Skill sets</h3>
-    <table class="table" data-toggle="table">
-      <thead>
-        <tr>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Id</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Name</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Rewards</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Can upgrade?</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Category</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for skill_set in skill_sets %}
-        <tr id="skill-set-{{ skill_set.id }}">
-          <td style="white-space: nowrap;">
-            {{ skill_set.id }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ skill_set.name }}
-          </td>
-          <td style="white-space: nowrap;">
-          <ul>
-          {% for reward in skill_set.rewards %}
-          {% if reward.skill or reward.trait %}
-            <li>
-                {{ reward.skill_point_requirement }}:
-                {% if reward.skill %}
-                {{ reward.skill }}
-                {% else %}
-                {{ reward.trait }}
-                {% endif %}
-            </li>
-          {% endif %}
-          {% endfor %}
-          </ul>
-          </td>
-          <td style="white-space: nowrap;">
-            {{ skill_set.can_upgrade }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ skill_set.category }}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  <div class="row table-responsive">
-    <h3 id="encounters">Encounters</h3>
-    <table class="table" data-toggle="table">
-      <thead>
-        <tr>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Id</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Species</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Gold</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Experience</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Level</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Scout chance</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Max HP</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Max MP</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Attack</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Defense</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Agility</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Wisdom</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Skills</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Item drops</th>
-          <th style="white-space: nowrap;" scope="col" data-sortable="true">Skill sets</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for encounter in encounters %}
-        <tr>
-          <td style="white-space: nowrap;">
-            {{ encounter.id }}
-          </td>
-          <td style="white-space: nowrap;"><a href="#species-{{ encounter.species_id }}">{{ encounter.species }}</a></td>
-          <td style="white-space: nowrap;">
-            {{ encounter.gold }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ encounter.exp }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ encounter.level }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ encounter.scout_chance }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ encounter.max_hp }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ encounter.max_mp }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ encounter.attack }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ encounter.defense }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ encounter.agility }}
-          </td>
-          <td style="white-space: nowrap;">
-            {{ encounter.wisdom }}
-          </td>
-          <td style="white-space: nowrap;">
-            {% for skill in encounter.skills %}
-                <a href="#skill-{{ skill.id }}">{{ skill.name }}</a>,&nbsp;
-            {% endfor %}
-          </td>
-          <td style="white-space: nowrap;">
-            {% for item_drop in encounter.item_drops %}
-                <a href="#item-{{ item_drop.id }}">{{ item_drop.name }}</a>,&nbsp;
-            {% endfor %}
-          </td>
-          <td style="white-space: nowrap;">
-            {% for skill_set in encounter.skill_sets %}
-                <a href="#skill-set-{{ skill_set.id }}">{{ skill_set.name }}</a>,&nbsp;
-            {% endfor %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    <div class="row table-responsive">
+        <h3 id="skill-sets">Skill sets</h3>
+        <table id="skill-sets-table" class="table" data-toggle="table">
+            
+        </table>
+    </div>
+    <div class="row table-responsive">
+        <h3 id="encounters">Encounters</h3>
+        <table class="table" data-toggle="table">
+            <thead>
+                <tr>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Id</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Species</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Gold</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Experience</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Level</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Scout chance</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Max HP</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Max MP</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Attack</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Defense</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Agility</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Wisdom</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Skills</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Item drops</th>
+                    <th style="white-space: nowrap;" scope="col" data-sortable="true">Skill sets</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for encounter in encounters %}
+                <tr>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.id }}
+                    </td>
+                    <td style="white-space: nowrap;"><a href="#species-{{ encounter.species_id }}">{{ encounter.species
+                            }}</a></td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.gold }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.exp }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.level }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.scout_chance }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.max_hp }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.max_mp }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.attack }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.defense }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.agility }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {{ encounter.wisdom }}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {% for skill in encounter.skills %}
+                        <a href="#skill-{{ skill.id }}">{{ skill.name }}</a>,&nbsp;
+                        {% endfor %}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {% for item_drop in encounter.item_drops %}
+                        <a href="#item-{{ item_drop.id }}">{{ item_drop.name }}</a>,&nbsp;
+                        {% endfor %}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        {% for skill_set in encounter.skill_sets %}
+                        <a href="#skill-set-{{ skill_set.id }}">{{ skill_set.name }}</a>,&nbsp;
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+<script>
+    "use strict";
+    const $table = $('#skill-sets-table');
+
+    function buildTable($el, cells, rows) {
+        console.log('building table');
+
+        let row;
+        const columns = [
+            {
+                field: 'id',
+                title: 'Id',
+                sortable: true
+            },
+            {
+                field: 'name',
+                title: 'Name',
+                sortable: true
+            },
+            {
+                field: 'rewards_html',
+                title: 'Rewards',
+                sortable: true
+            },
+        ];
+
+        const data = {{ skill_sets | tojson }};
+
+        for (let i = 0; i < data.length; i++) {
+            let buffer = ["<ul>"];
+            for (let j = 0; j < data[i].rewards.length; j++) {
+                if (data[i].rewards[j].skill || data[i].rewards[j].trait) {
+                    buffer.push("<li>");
+                    buffer.push(data[i].rewards[j].skill_point_requirement);
+                    buffer.push(": ");
+
+                    if (data[i].rewards[j].skill) {
+                        buffer.push(data[i].rewards[j].skill);
+                    } else {
+                        buffer.push(data[i].rewards[j].trait);
+                    }
+
+                    buffer.push("</li>");
+                }
+            }
+            buffer.push("</ul>");
+            data[i].rewards_html = buffer.join("");
+        }
+        console.log(data);
+        
+        //const classes = $('.toolbar input:checked').next().text()
+
+        $el.bootstrapTable('destroy').bootstrapTable({
+            columns,
+            data,
+            search: true,
+            stickyHeader: true,
+            //theadClasses: classes
+        })
+    }
+
+    $(function () {
+        //$('.toolbar input').change(function () {
+        //    buildTable($table, 20, 50)
+        //})
+        buildTable($table, 20, 50)
+    })
+</script>
 {% endblock %}
