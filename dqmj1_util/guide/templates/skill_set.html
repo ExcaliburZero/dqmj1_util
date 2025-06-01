@@ -4,16 +4,28 @@
     <div class="row">
         <h2>{{ skill_set.name }}</h2>
         <h3>Rewards</h3>
-        <ul>
-            {% for reward in skill_set.rewards %}
-            {% if reward.skill %}
-            <li>{{ reward.skill_point_requirement }}: {{ reward.skill }}</li>
-            {% endif %}
-            {% if reward.trait %}
-            <li>{{ reward.skill_point_requirement }}: {{ reward.trait }}</li>
-            {% endif %}
-            {% endfor %}
-        </ul>
+        <div class="page-content">
+            <table class="table" style="max-width: 300px;">
+                <tr>
+                    <th>Points</th>
+                    <th>Skill / trait</th>
+                </tr>
+                {% for reward in skill_set.rewards %}
+                {% if reward.skill %}
+                <tr>
+                    <td>{{ reward.skill_point_requirement }}</td>
+                    <td>{{ reward.skill }}</td>
+                </tr>
+                {% endif %}
+                {% if reward.trait %}
+                <tr>
+                    <td>{{ reward.skill_point_requirement }}</td>
+                    <td>{{ reward.trait }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}
