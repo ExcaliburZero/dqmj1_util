@@ -1,0 +1,87 @@
+import argparse
+import os
+import pathlib
+import sys
+from dataclasses import asdict, dataclass
+from typing import Any
+
+import jinja2 as j2
+
+from dqmj1_util.rom import Rom
+from dqmj1_util.simple.encounter import Encounter
+
+SUCCESS = 0
+FAILURE = 1
+
+
+def write_guide(rom: Rom, output_directory: os.PathLike[Any] | str) -> None:
+    output_directory = pathlib.Path(output_directory)
+    output_directory.mkdir(exist_ok=True)
+
+    encounters = rom.load_encounters()
+
+    env = j2.Environment(
+        loader=j2.PackageLoader("dqmj1_util.guide"),
+        autoescape=j2.select_autoescape(),
+    )
+    index_template = env.get_template("index.html")
+
+    index_filepath = output_directory / "index.html"
+
+    processed_encounters = process_encounters(encounters)
+
+    with index_filepath.open("w") as output_stream:
+        output_stream.write(
+            index_template.render(
+                title="DQMJ1 Guide",
+                encounters=processed_encounters,
+            )
+        )
+
+
+def process_encounters(encounters: list[Encounter]) -> list[dict[str, Any]]:
+    processed = []
+    for encounter in encounters:
+        after = asdict(encounter)
+
+        after["skills"] = [
+            {
+                "name": encounter.skills[i],
+                "id": encounter.skill_ids[i],
+            }
+            for i in range(0, len(encounter.skills))
+        ]
+        after["item_drops"] = [
+            {
+                "name": encounter.item_drops[i],
+                "id": encounter.item_drop_item_ids[i],
+            }
+            for i in range(0, len(encounter.item_drops))
+        ]
+
+        processed.append(after)
+
+    return processed[:858]
+
+
+@dataclass(frozen=True)
+class Args:
+    rom_filepath: pathlib.Path
+    output_directory: pathlib.Path
+
+
+def main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--rom_filepath", required=True, type=pathlib.Path)
+    parser.add_argument("--output_directory", required=True, type=pathlib.Path)
+
+    args = Args(**vars(parser.parse_args(argv)))
+
+    write_guide(Rom(args.rom_filepath), args.output_directory)
+
+    return SUCCESS
+
+
+def main_without_args() -> int:
+    return main(sys.argv[1:])

@@ -2,6 +2,7 @@
 /testing.py
 /encounters.csv
 /output
+/guide
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
