@@ -18,9 +18,23 @@ SKILL_TBL_PATH = "SkillTbl.bin"
 
 
 class Rom:
+    """
+    ROM containing the game's internal binaries and data files.
+
+    Used to read data from and write data to the game ROM.
+    """
+
     def __init__(
         self, filepath: os.PathLike[Any] | str, region: Region = Region.NorthAmerica
     ) -> None:
+        """
+        Create a ROM object from the filepath to the ROM file.
+
+        If not using a North American ROM file, you must provide the region the ROM is from.
+
+        :param filepath: Filepath to the ROM file to work with.
+        :param region: Region the ROM file is for.
+        """
         self.filepath = pathlib.Path(filepath)
         self.region = region
 
@@ -30,6 +44,11 @@ class Rom:
 
     @property
     def string_tables(self) -> StringTables:
+        """
+        String tables stored in the ROM's binaries.
+
+        Read-only
+        """
         if self._string_tables is not None:
             return self._string_tables
 

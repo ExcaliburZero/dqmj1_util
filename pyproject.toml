@@ -16,10 +16,11 @@ packages = ["dqmj1_util"]
 
 [tool.mypy]
 strict = true
-exclude = ["build"]
+exclude = ["build", "docs"]
 
 [tool.ruff]
 line-length = 100
+exclude = ["build", "docs"]
 
 [tool.ruff.lint]
 select = [

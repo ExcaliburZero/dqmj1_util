@@ -42,6 +42,11 @@ class EnemySkillEntry:
 
 @dataclass
 class BtlEnmyPrmEntry:
+    """
+    Encounter entry in a :class:`BtlEnmyPrm`, detailing the stats, attacks, and more of a
+    particular monster.
+    """
+
     species_id: int
     unknown_a: bytes
     skills: list[EnemySkillEntry]
@@ -145,6 +150,11 @@ class BtlEnmyPrmEntry:
 
 @dataclass
 class BtlEnmyPrm:
+    """
+    An encounter table (:code:`"BtlEnmyPrm.bin"`) listing the monsters used as battle enemies, gift
+    monsters, starter monsters, etc.
+    """
+
     entries: list[BtlEnmyPrmEntry]
 
     def write_bin(self, output_stream: IO[bytes]) -> None:

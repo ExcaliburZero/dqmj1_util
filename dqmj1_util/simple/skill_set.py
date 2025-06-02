@@ -8,23 +8,22 @@ from dqmj1_util.string_tables import StringTables
 
 
 @dataclass
-class SkillSetReward:
-    skill_point_requirement: int
-    skill: Optional[str]
-    skill_id: Optional[int]
-    trait: Optional[str]
-    trait_id: Optional[int]
-
-
-@dataclass
 class SkillSet:
     name: str
     can_upgrade: bool
     category: int  # TODO: make into an enum
     max_skill_points: int
-    rewards: list[SkillSetReward]
+    rewards: list[Reward]
     species_learnt_by: list[str]
     species_learnt_by_ids: list[int]
+
+    @dataclass
+    class Reward:
+        skill_point_requirement: int
+        skill: Optional[str]
+        skill_id: Optional[int]
+        trait: Optional[str]
+        trait_id: Optional[int]
 
     @staticmethod
     def from_raw(skill_set_id: int, raw: SkillTblEntry, string_tables: StringTables) -> SkillSet:
@@ -51,7 +50,7 @@ class SkillSet:
                 trait = string_tables.trait_names[trait_id]
 
             params["rewards"].append(
-                SkillSetReward(
+                SkillSet.Reward(
                     skill_point_requirement=raw.skill_point_requirements[i],
                     skill=skill,
                     skill_id=skill_id,
