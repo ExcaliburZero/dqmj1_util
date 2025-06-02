@@ -6,6 +6,7 @@ dependencies = ["ndspy", "pandas"]
 [project.optional-dependencies]
 test = ["mypy==1.15", "ruff==0.11", "pandas-stubs", "pytest", "pytest-cov"]
 guide = ["jinja2"]
+docs = ["sphinx", "furo"]
 
 [project.scripts]
 dqmj1-guide = "dqmj1_util.guide:main_without_args"
