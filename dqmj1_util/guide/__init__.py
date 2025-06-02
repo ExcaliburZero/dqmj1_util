@@ -218,3 +218,6 @@ def main(argv: list[str]) -> int:
 
 def main_without_args() -> int:
     return main(sys.argv[1:])
+
+
+__all__ = ["GuideData", "main_without_args", "write_guide"]

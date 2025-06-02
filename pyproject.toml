@@ -12,7 +12,7 @@ docs = ["sphinx", "furo"]
 dqmj1-guide = "dqmj1_util.guide:main_without_args"
 
 [tool.setuptools]
-packages = ["dqmj1_util"]
+packages = ["dqmj1_util", "dqmj1_util.guide", "dqmj1_util.raw", "dqmj1_util.simple", "dqmj1_util.string_tables", "dqmj1_util.string_tables.locations"]
 
 [tool.mypy]
 strict = true
