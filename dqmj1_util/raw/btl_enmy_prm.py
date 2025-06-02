@@ -1,43 +1,11 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import IO, Literal
 
 import pandas as pd
 
 ENDIANESS: Literal["little"] = "little"
-
-
-@dataclass
-class ItemDrop:
-    item_id: int
-    chance_denominator_2_power: int
-
-    def write_bin(self, output_stream: IO[bytes]) -> None:
-        output_stream.write(self.item_id.to_bytes(2, ENDIANESS))
-        output_stream.write(self.chance_denominator_2_power.to_bytes(2, ENDIANESS))
-
-    @staticmethod
-    def from_bin(input_stream: IO[bytes]) -> "ItemDrop":
-        item_id = int.from_bytes(input_stream.read(2), ENDIANESS)
-        chance_denominator_2_power = int.from_bytes(input_stream.read(2), ENDIANESS)
-
-        return ItemDrop(item_id=item_id, chance_denominator_2_power=chance_denominator_2_power)
-
-
-@dataclass
-class EnemySkillEntry:
-    unknown_a: int
-    skill_id: int
-
-    def write_bin(self, output_stream: IO[bytes]) -> None:
-        output_stream.write(self.unknown_a.to_bytes(2, ENDIANESS))
-        output_stream.write(self.skill_id.to_bytes(2, ENDIANESS))
-
-    @staticmethod
-    def from_bin(input_stream: IO[bytes]) -> "EnemySkillEntry":
-        unknown_a = int.from_bytes(input_stream.read(2), ENDIANESS)
-        skill_id = int.from_bytes(input_stream.read(2), ENDIANESS)
-
-        return EnemySkillEntry(unknown_a=unknown_a, skill_id=skill_id)
 
 
 @dataclass
@@ -49,7 +17,7 @@ class BtlEnmyPrmEntry:
 
     species_id: int
     unknown_a: bytes
-    skills: list[EnemySkillEntry]
+    skills: list[EnemySkill]
     item_drops: list[ItemDrop]
     gold: int
     unknown_b: bytes
@@ -68,6 +36,40 @@ class BtlEnmyPrmEntry:
     unknown_f: bytes
     skill_set_ids: list[int]
     unknown_g: bytes
+
+    @dataclass
+    class ItemDrop:
+        item_id: int
+        chance_denominator_2_power: int
+
+        def write_bin(self, output_stream: IO[bytes]) -> None:
+            output_stream.write(self.item_id.to_bytes(2, ENDIANESS))
+            output_stream.write(self.chance_denominator_2_power.to_bytes(2, ENDIANESS))
+
+        @staticmethod
+        def from_bin(input_stream: IO[bytes]) -> BtlEnmyPrmEntry.ItemDrop:
+            item_id = int.from_bytes(input_stream.read(2), ENDIANESS)
+            chance_denominator_2_power = int.from_bytes(input_stream.read(2), ENDIANESS)
+
+            return BtlEnmyPrmEntry.ItemDrop(
+                item_id=item_id, chance_denominator_2_power=chance_denominator_2_power
+            )
+
+    @dataclass
+    class EnemySkill:
+        unknown_a: int
+        skill_id: int
+
+        def write_bin(self, output_stream: IO[bytes]) -> None:
+            output_stream.write(self.unknown_a.to_bytes(2, ENDIANESS))
+            output_stream.write(self.skill_id.to_bytes(2, ENDIANESS))
+
+        @staticmethod
+        def from_bin(input_stream: IO[bytes]) -> BtlEnmyPrmEntry.EnemySkill:
+            unknown_a = int.from_bytes(input_stream.read(2), ENDIANESS)
+            skill_id = int.from_bytes(input_stream.read(2), ENDIANESS)
+
+            return BtlEnmyPrmEntry.EnemySkill(unknown_a=unknown_a, skill_id=skill_id)
 
     def write_bin(self, output_stream: IO[bytes]) -> None:
         output_stream.write(self.species_id.to_bytes(2, ENDIANESS))
@@ -96,12 +98,12 @@ class BtlEnmyPrmEntry:
         output_stream.write(self.unknown_g)
 
     @staticmethod
-    def from_bin(input_stream: IO[bytes]) -> "BtlEnmyPrmEntry":
+    def from_bin(input_stream: IO[bytes]) -> BtlEnmyPrmEntry:
         species_id = int.from_bytes(input_stream.read(2), ENDIANESS)
 
         unknown_a = input_stream.read(6)
-        skills = [EnemySkillEntry.from_bin(input_stream) for _ in range(0, 6)]
-        item_drops = [ItemDrop.from_bin(input_stream) for _ in range(0, 2)]
+        skills = [BtlEnmyPrmEntry.EnemySkill.from_bin(input_stream) for _ in range(0, 6)]
+        item_drops = [BtlEnmyPrmEntry.ItemDrop.from_bin(input_stream) for _ in range(0, 2)]
         gold = int.from_bytes(input_stream.read(2), ENDIANESS)
         unknown_b = input_stream.read(2)
         exp = int.from_bytes(input_stream.read(2), ENDIANESS)
@@ -166,7 +168,7 @@ class BtlEnmyPrm:
             entry.write_bin(output_stream)
 
     @staticmethod
-    def from_bin(input_stream: IO[bytes]) -> "BtlEnmyPrm":
+    def from_bin(input_stream: IO[bytes]) -> BtlEnmyPrm:
         input_stream.read(4)
         length = int.from_bytes(input_stream.read(4), ENDIANESS)
 

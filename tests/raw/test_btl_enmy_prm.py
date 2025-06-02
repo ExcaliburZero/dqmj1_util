@@ -1,11 +1,9 @@
 import io
 import unittest
 
-from dqmj1_util.raw.btl_enmy_prm import (
+from dqmj1_util.raw import (
     BtlEnmyPrm,
     BtlEnmyPrmEntry,
-    EnemySkillEntry,
-    ItemDrop,
 )
 
 
@@ -13,13 +11,13 @@ class TestItemDrop(unittest.TestCase):
     def test_from_bin(self) -> None:
         input_stream = io.BytesIO(b"\x01\x00\x02\x00")
 
-        actual = ItemDrop.from_bin(input_stream)
+        actual = BtlEnmyPrmEntry.ItemDrop.from_bin(input_stream)
 
-        expected = ItemDrop(1, 2)
+        expected = BtlEnmyPrmEntry.ItemDrop(1, 2)
         self.assertEqual(expected, actual)
 
     def test_write_bin(self) -> None:
-        item_drop = ItemDrop(1, 2)
+        item_drop = BtlEnmyPrmEntry.ItemDrop(1, 2)
         output_stream = io.BytesIO()
 
         item_drop.write_bin(output_stream)
@@ -30,17 +28,17 @@ class TestItemDrop(unittest.TestCase):
         self.assertEqual(expected, actual)
 
 
-class TestEnemySkillEntry(unittest.TestCase):
+class TestEnemySkill(unittest.TestCase):
     def test_from_bin(self) -> None:
         input_stream = io.BytesIO(b"\x01\x00\x02\x00")
 
-        actual = EnemySkillEntry.from_bin(input_stream)
+        actual = BtlEnmyPrmEntry.EnemySkill.from_bin(input_stream)
 
-        expected = EnemySkillEntry(1, 2)
+        expected = BtlEnmyPrmEntry.EnemySkill(1, 2)
         self.assertEqual(expected, actual)
 
     def test_write_bin(self) -> None:
-        enemy_skill_entry = EnemySkillEntry(1, 2)
+        enemy_skill_entry = BtlEnmyPrmEntry.EnemySkill(1, 2)
         output_stream = io.BytesIO()
 
         enemy_skill_entry.write_bin(output_stream)
@@ -110,16 +108,16 @@ class TestBtlEnmyPrmEntry(unittest.TestCase):
             species_id=1,
             unknown_a=b"\x00\x00\x00\x00\x00\x00",
             skills=[
-                EnemySkillEntry(0, 1),
-                EnemySkillEntry(0, 2),
-                EnemySkillEntry(0, 3),
-                EnemySkillEntry(0, 4),
-                EnemySkillEntry(0, 5),
-                EnemySkillEntry(0, 6),
+                BtlEnmyPrmEntry.EnemySkill(0, 1),
+                BtlEnmyPrmEntry.EnemySkill(0, 2),
+                BtlEnmyPrmEntry.EnemySkill(0, 3),
+                BtlEnmyPrmEntry.EnemySkill(0, 4),
+                BtlEnmyPrmEntry.EnemySkill(0, 5),
+                BtlEnmyPrmEntry.EnemySkill(0, 6),
             ],
             item_drops=[
-                ItemDrop(1, 0),
-                ItemDrop(2, 7),
+                BtlEnmyPrmEntry.ItemDrop(1, 0),
+                BtlEnmyPrmEntry.ItemDrop(2, 7),
             ],
             gold=288,
             unknown_b=b"\x00\x00",
@@ -146,16 +144,16 @@ class TestBtlEnmyPrmEntry(unittest.TestCase):
             species_id=1,
             unknown_a=b"\x00\x00\x00\x00\x00\x00",
             skills=[
-                EnemySkillEntry(0, 1),
-                EnemySkillEntry(0, 2),
-                EnemySkillEntry(0, 3),
-                EnemySkillEntry(0, 4),
-                EnemySkillEntry(0, 5),
-                EnemySkillEntry(0, 6),
+                BtlEnmyPrmEntry.EnemySkill(0, 1),
+                BtlEnmyPrmEntry.EnemySkill(0, 2),
+                BtlEnmyPrmEntry.EnemySkill(0, 3),
+                BtlEnmyPrmEntry.EnemySkill(0, 4),
+                BtlEnmyPrmEntry.EnemySkill(0, 5),
+                BtlEnmyPrmEntry.EnemySkill(0, 6),
             ],
             item_drops=[
-                ItemDrop(1, 0),
-                ItemDrop(2, 7),
+                BtlEnmyPrmEntry.ItemDrop(1, 0),
+                BtlEnmyPrmEntry.ItemDrop(2, 7),
             ],
             gold=288,
             unknown_b=b"\x00\x00",
@@ -299,16 +297,16 @@ class TestBtlEnmyPrm(unittest.TestCase):
                     species_id=1,
                     unknown_a=b"\x00\x00\x00\x00\x00\x00",
                     skills=[
-                        EnemySkillEntry(0, 1),
-                        EnemySkillEntry(0, 2),
-                        EnemySkillEntry(0, 3),
-                        EnemySkillEntry(0, 4),
-                        EnemySkillEntry(0, 5),
-                        EnemySkillEntry(0, 6),
+                        BtlEnmyPrmEntry.EnemySkill(0, 1),
+                        BtlEnmyPrmEntry.EnemySkill(0, 2),
+                        BtlEnmyPrmEntry.EnemySkill(0, 3),
+                        BtlEnmyPrmEntry.EnemySkill(0, 4),
+                        BtlEnmyPrmEntry.EnemySkill(0, 5),
+                        BtlEnmyPrmEntry.EnemySkill(0, 6),
                     ],
                     item_drops=[
-                        ItemDrop(1, 0),
-                        ItemDrop(2, 7),
+                        BtlEnmyPrmEntry.ItemDrop(1, 0),
+                        BtlEnmyPrmEntry.ItemDrop(2, 7),
                     ],
                     gold=288,
                     unknown_b=b"\x00\x00",
@@ -339,16 +337,16 @@ class TestBtlEnmyPrm(unittest.TestCase):
                     species_id=1,
                     unknown_a=b"\x00\x00\x00\x00\x00\x00",
                     skills=[
-                        EnemySkillEntry(0, 1),
-                        EnemySkillEntry(0, 2),
-                        EnemySkillEntry(0, 3),
-                        EnemySkillEntry(0, 4),
-                        EnemySkillEntry(0, 5),
-                        EnemySkillEntry(0, 6),
+                        BtlEnmyPrmEntry.EnemySkill(0, 1),
+                        BtlEnmyPrmEntry.EnemySkill(0, 2),
+                        BtlEnmyPrmEntry.EnemySkill(0, 3),
+                        BtlEnmyPrmEntry.EnemySkill(0, 4),
+                        BtlEnmyPrmEntry.EnemySkill(0, 5),
+                        BtlEnmyPrmEntry.EnemySkill(0, 6),
                     ],
                     item_drops=[
-                        ItemDrop(1, 0),
-                        ItemDrop(2, 7),
+                        BtlEnmyPrmEntry.ItemDrop(1, 0),
+                        BtlEnmyPrmEntry.ItemDrop(2, 7),
                     ],
                     gold=288,
                     unknown_b=b"\x00\x00",
