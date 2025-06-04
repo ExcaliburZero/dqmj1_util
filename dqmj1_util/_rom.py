@@ -169,6 +169,9 @@ class Rom:
             self.btl_enmy_prm.write_bin(output_stream)
             self._rom.setFileByName(BTL_ENMY_PRM_PATH, bytes(output_stream.getbuffer()))
 
+        if self._skill_tbl.is_dirty:
+            raise NotImplementedError
+
         self._rom.saveToFile(filepath)
 
     def _load_string_tables(self) -> StringTables:
