@@ -26,7 +26,7 @@ SKILL_SETS = [
 ]
 ENCOUNTERS = [
     Encounter(
-        species=f"species_a",
+        species="species_a",
         species_id=1,
         skills=["skill_b"],
         skill_ids=[2],
