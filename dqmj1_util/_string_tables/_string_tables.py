@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 import ndspy.rom
 
-from dqmj1_util.region import Region
-from dqmj1_util.string_tables.locations import STRING_TABLE_LOCATIONS
+from dqmj1_util._region import Region
+from dqmj1_util._string_tables._locations import STRING_TABLE_LOCATIONS
 
 
 @dataclass

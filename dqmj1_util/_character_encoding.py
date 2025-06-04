@@ -1,6 +1,6 @@
 # ruff: noqa: RUF001
 
-from dqmj1_util.region import Region
+from dqmj1_util._region import Region
 
 
 class StringToDmqj1BytesEncodingError(ValueError):

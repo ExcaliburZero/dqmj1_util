@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from dqmj1_util.string_tables import StringTables
+from dqmj1_util._string_tables import StringTables
 
 
 @dataclass

@@ -1,9 +1,9 @@
 import unittest
 
-from dqmj1_util.raw.btl_enmy_prm import (
+from dqmj1_util.raw._btl_enmy_prm import (
     BtlEnmyPrmEntry,
 )
-from dqmj1_util.simple.encounter import Encounter
+from dqmj1_util.simple._encounter import Encounter
 from tests.util import STRING_TABLES
 
 

@@ -7,10 +7,10 @@ import sys
 from dataclasses import asdict, dataclass
 from typing import Any
 
-from dqmj1_util.rom import Rom
-from dqmj1_util.simple.encounter import Encounter
-from dqmj1_util.simple.skill import Skill
-from dqmj1_util.simple.skill_set import SkillSet
+from dqmj1_util._rom import Rom
+from dqmj1_util.simple._encounter import Encounter
+from dqmj1_util.simple._skill import Skill
+from dqmj1_util.simple._skill_set import SkillSet
 
 SUCCESS = 0
 FAILURE = 1
@@ -33,7 +33,7 @@ def write_guide(guide_data: GuideData, output_directory: os.PathLike[Any] | str)
     import jinja2 as j2
 
     env = j2.Environment(
-        loader=j2.PackageLoader("dqmj1_util.guide"),
+        loader=j2.PackageLoader("dqmj1_util._guide"),
         autoescape=j2.select_autoescape(),
     )
     index_template = env.get_template("index.html")

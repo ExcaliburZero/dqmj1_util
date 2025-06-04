@@ -5,13 +5,13 @@ from typing import Any, Optional
 
 import ndspy.rom
 
-from dqmj1_util.raw.btl_enmy_prm import BtlEnmyPrm
-from dqmj1_util.raw.skill_tbl import SkillTbl
-from dqmj1_util.region import Region
-from dqmj1_util.simple.encounter import Encounter
-from dqmj1_util.simple.skill import Skill
-from dqmj1_util.simple.skill_set import SkillSet
-from dqmj1_util.string_tables import StringTables
+from dqmj1_util._region import Region
+from dqmj1_util._string_tables import StringTables
+from dqmj1_util.raw._btl_enmy_prm import BtlEnmyPrm
+from dqmj1_util.raw._skill_tbl import SkillTbl
+from dqmj1_util.simple._encounter import Encounter
+from dqmj1_util.simple._skill import Skill
+from dqmj1_util.simple._skill_set import SkillSet
 
 BTL_ENMY_PRM_PATH = "BtlEnmyPrm.bin"
 SKILL_TBL_PATH = "SkillTbl.bin"

@@ -4,8 +4,8 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import TypeVar
 
-from dqmj1_util.raw.btl_enmy_prm import BtlEnmyPrmEntry
-from dqmj1_util.string_tables import StringTables
+from dqmj1_util._string_tables import StringTables
+from dqmj1_util.raw._btl_enmy_prm import BtlEnmyPrmEntry
 
 T = TypeVar("T")
 

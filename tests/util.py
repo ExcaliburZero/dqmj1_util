@@ -1,7 +1,7 @@
-from dqmj1_util.simple.encounter import Encounter
-from dqmj1_util.simple.skill import Skill
-from dqmj1_util.simple.skill_set import SkillSet
-from dqmj1_util.string_tables import StringTables
+from dqmj1_util._string_tables import StringTables
+from dqmj1_util.simple._encounter import Encounter
+from dqmj1_util.simple._skill import Skill
+from dqmj1_util.simple._skill_set import SkillSet
 
 STRING_TABLES = StringTables(
     species_names=[f"species_{i}" for i in range(0, 512)],

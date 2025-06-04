@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from dqmj1_util.raw.skill_tbl import SkillTblEntry
-from dqmj1_util.string_tables import StringTables
+from dqmj1_util._string_tables import StringTables
+from dqmj1_util.raw._skill_tbl import SkillTblEntry
 
 
 @dataclass

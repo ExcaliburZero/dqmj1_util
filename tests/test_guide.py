@@ -1,7 +1,7 @@
 import pathlib
 import unittest
 
-from dqmj1_util.guide import GuideData, write_guide
+from dqmj1_util._guide import GuideData, write_guide
 from tests.util import ENCOUNTERS, SKILL_SETS, SKILLS
 
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import IO, Literal
 
-from dqmj1_util.region import Region
+from dqmj1_util._region import Region
 
 ENDIANESS: Literal["little"] = "little"
 
