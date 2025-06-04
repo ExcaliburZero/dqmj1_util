@@ -5,7 +5,7 @@ import io
 import os
 import pathlib
 from collections.abc import Iterable
-from typing import IO, Any, Callable, Generic, Optional, Protocol, TypeVar
+from typing import Any, Callable, Generic, Optional, TypeVar
 
 import ndspy.rom
 
