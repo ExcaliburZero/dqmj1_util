@@ -22,10 +22,20 @@ This library is a work in progress, so the API may change frequently.
 
    import dqmj1_util as dqmj
 
-   encounters = dqmj.Rom("DQMJ1_NA.nds").load_encounters()
+   rom = dqmj.Rom("Dragon Quest Monsters - Joker (USA).nds")
 
+   # Reading game data
+   encounters = rom.encounters
    print(encounters[1].species)
    print(encounters[1].species_id)
+
+   # Modding game files
+   btl_enmy_prm = rom.btl_enmy_prm
+   for btl in btl_enmy_prm.entries:
+      btl.species_id = 318  # 318 == Dr Snapped
+
+   rom.btl_enmy_prm = btl_enmy_prm
+   rom.write("oops_all_snaps.nds")
 
 Sections
 --------

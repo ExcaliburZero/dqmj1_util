@@ -206,9 +206,9 @@ def main(argv: list[str]) -> int:
     rom = Rom(args.rom_filepath)
 
     guide_data = GuideData(
-        skills=rom.load_skills(),
-        skill_sets=rom.load_skill_sets(),
-        encounters=rom.load_encounters(),
+        skills=rom.skills,
+        skill_sets=rom.skill_sets,
+        encounters=rom.encounters,
     )
 
     write_guide(guide_data, args.output_directory)

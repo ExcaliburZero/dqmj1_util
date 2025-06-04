@@ -6,6 +6,8 @@
 .vscode
 /tests/output
 /docs/_build
+*.nds
+*.sav
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
