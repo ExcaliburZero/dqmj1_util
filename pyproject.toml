@@ -1,11 +1,10 @@
 [project]
 name = "dqmj1_util"
 version = "0.0.1"
-dependencies = ["ndspy", "pandas"]
+dependencies = ["ndspy", "pandas", "jinja2"]
 
 [project.optional-dependencies]
 test = ["mypy==1.15", "ruff==0.11", "pandas-stubs", "pytest", "pytest-cov"]
-guide = ["jinja2"]
 docs = ["sphinx", "furo"]
 
 [project.scripts]

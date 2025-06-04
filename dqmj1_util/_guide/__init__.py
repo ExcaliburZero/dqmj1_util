@@ -7,6 +7,8 @@ import sys
 from dataclasses import asdict, dataclass
 from typing import Any
 
+import jinja2 as j2
+
 from dqmj1_util._rom import Rom
 from dqmj1_util.simple._encounter import Encounter
 from dqmj1_util.simple._skill import Skill
@@ -29,8 +31,6 @@ def write_guide(guide_data: GuideData, output_directory: os.PathLike[Any] | str)
     skills = guide_data.skills
     skill_sets = guide_data.skill_sets
     encounters = guide_data.encounters
-
-    import jinja2 as j2
 
     env = j2.Environment(
         loader=j2.PackageLoader("dqmj1_util._guide"),
