@@ -42,6 +42,9 @@ class Rom:
 
         self._string_tables: Optional[StringTables] = None
 
+    def __repr__(self) -> str:
+        return f"Rom(filepath={self.filepath}, region={self.region})"
+
     @property
     def string_tables(self) -> StringTables:
         """
