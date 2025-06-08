@@ -8,6 +8,7 @@
 /docs/_build
 *.nds
 *.sav
+*.ml1
 
 /.qlty
 
