@@ -62,8 +62,15 @@ class SkillSet:
             )
         params["rewards"] = rewards
 
-        del params["skill_point_requirements"]
-        del params["skill_ids"]
-        del params["trait_ids"]
+        keys_to_keep = [
+            "name",
+            "can_upgrade",
+            "category",
+            "max_skill_points",
+            "rewards",
+            "species_learnt_by",
+            "species_learnt_by_ids",
+        ]
+        params = {key: value for key, value in params.items() if key in keys_to_keep}
 
         return SkillSet(**params)

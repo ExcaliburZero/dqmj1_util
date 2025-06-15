@@ -45,6 +45,7 @@ class SkillTblEntry:
     class Skills:
         """
         Skills learned as a particular skill set reward.
+
         Has multiple skill ids if multiple skills are rewarded and/or if the skill has lower level
         skills that it replaces (ex. Frizzle replacing Frizz).
         """
@@ -52,8 +53,10 @@ class SkillTblEntry:
         skill_ids: Annotated[list[dcs.U16], 4]
         """
         Ids of the skills rewarded at the particular level of the skill set.
+
         Has multiple skill ids if multiple skills are rewarded and/or if the skill has lower level
         skills that it replaces (ex. Frizzle replacing Frizz).
+
         Always has four entries. Empty slots are represented by a skill id of 0.
         """
 
@@ -66,6 +69,7 @@ class SkillTblEntry:
     class Traits:
         """
         Traits learned as a particular skill set reward.
+
         Has multiple trait ids if multiple traits are rewarded and/or if the trait has lower level
         traits that it replaces.
         """
@@ -73,8 +77,10 @@ class SkillTblEntry:
         trait_ids: Annotated[list[dcs.U8], 4]
         """
         Ids of the traits rewarded at the particular level of the skill set.
+
         Has multiple trait ids if multiple traits are rewarded and/or if the trait has lower level
         traits that it replaces.
+
         Always has four entries. Empty slots are represented by a trait id of 0.
         """
 
@@ -91,11 +97,30 @@ class SkillTblEntry:
 
 @dcs.dataclass_struct(size="std", byteorder="little")
 class SkillTblEntryJp(SkillTblEntryBase, BinaryReadWriteable):
-    pass
+    can_upgrade: dcs.U8
+    category: dcs.U8
+    max_skill_points: dcs.U8
+    unknown_a: Annotated[bytes, 1]
+    skill_point_requirements: Annotated[list[SkillTblEntry.SkillPointRequirement], 10]
+    skills: Annotated[list[SkillTblEntry.Skills], 10]
+    traits: Annotated[list[SkillTblEntry.Traits], 10]
+    skill_set_id: dcs.U16
+    unknown_b: Annotated[bytes, 2]
+    species_learnt_by: Annotated[list[dcs.U16], 6]
 
 
 @dcs.dataclass_struct(size="std", byteorder="little")
 class SkillTblEntryNaEu(SkillTblEntryBase, BinaryReadWriteable):
+    can_upgrade: dcs.U8
+    category: dcs.U8
+    max_skill_points: dcs.U8
+    unknown_a: Annotated[bytes, 1]
+    skill_point_requirements: Annotated[list[SkillTblEntry.SkillPointRequirement], 10]
+    skills: Annotated[list[SkillTblEntry.Skills], 10]
+    traits: Annotated[list[SkillTblEntry.Traits], 10]
+    skill_set_id: dcs.U16
+    unknown_b: Annotated[bytes, 2]
+    species_learnt_by: Annotated[list[dcs.U16], 6]
     unknown_c: Annotated[bytes, 20]
 
 
@@ -103,12 +128,22 @@ class SkillTblEntryNaEu(SkillTblEntryBase, BinaryReadWriteable):
 class SkillTbl:
     entries: list[SkillTblEntryJp] | list[SkillTblEntryNaEu]
 
+    def write_bin(self, output_stream: IO[bytes]) -> None:
+        magic = b"\x53\x4b\x49\x4c"
+
+        output_stream.write(magic)
+        output_stream.write(len(self.entries).to_bytes(4, ENDIANESS))
+        for entry in self.entries:
+            entry.write_bin(output_stream)
+
     @staticmethod
     def from_bin(input_stream: IO[bytes], region: Region) -> SkillTbl:
-        input_stream.read(8)
+        input_stream.read(4)
+        length = int.from_bytes(input_stream.read(4), ENDIANESS)
+
         entries = cast(
             "list[SkillTblEntryJp] | list[SkillTblEntryNaEu]",
-            [SkillTblEntry.from_bin(input_stream, region) for _ in range(0, 0xC2)],
+            [SkillTblEntry.from_bin(input_stream, region) for _ in range(0, length)],
         )
 
         return SkillTbl(entries)
