@@ -34,11 +34,11 @@ class TestEnemySkill(unittest.TestCase):
 
         actual = BtlEnmyPrmEntry.EnemySkill.from_bin(input_stream)
 
-        expected = BtlEnmyPrmEntry.EnemySkill(1, 2)
+        expected = BtlEnmyPrmEntry.EnemySkill(b"\x01\x00", 2)
         self.assertEqual(expected, actual)
 
     def test_write_bin(self) -> None:
-        enemy_skill_entry = BtlEnmyPrmEntry.EnemySkill(1, 2)
+        enemy_skill_entry = BtlEnmyPrmEntry.EnemySkill(b"\x01\x00", 2)
         output_stream = io.BytesIO()
 
         enemy_skill_entry.write_bin(output_stream)
@@ -108,12 +108,12 @@ class TestBtlEnmyPrmEntry(unittest.TestCase):
             species_id=1,
             unknown_a=b"\x00\x00\x00\x00\x00\x00",
             skills=[
-                BtlEnmyPrmEntry.EnemySkill(0, 1),
-                BtlEnmyPrmEntry.EnemySkill(0, 2),
-                BtlEnmyPrmEntry.EnemySkill(0, 3),
-                BtlEnmyPrmEntry.EnemySkill(0, 4),
-                BtlEnmyPrmEntry.EnemySkill(0, 5),
-                BtlEnmyPrmEntry.EnemySkill(0, 6),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 1),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 2),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 3),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 4),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 5),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 6),
             ],
             item_drops=[
                 BtlEnmyPrmEntry.ItemDrop(1, 0),
@@ -124,8 +124,8 @@ class TestBtlEnmyPrmEntry(unittest.TestCase):
             exp=2,
             unknown_c=b"\x00\x00",
             level=16,
-            unknown_d=0,
-            unknown_e=0,
+            unknown_d=b"\x00",
+            unknown_e=b"\x00",
             scout_chance=5,
             max_hp=5,
             max_mp=6,
@@ -144,12 +144,12 @@ class TestBtlEnmyPrmEntry(unittest.TestCase):
             species_id=1,
             unknown_a=b"\x00\x00\x00\x00\x00\x00",
             skills=[
-                BtlEnmyPrmEntry.EnemySkill(0, 1),
-                BtlEnmyPrmEntry.EnemySkill(0, 2),
-                BtlEnmyPrmEntry.EnemySkill(0, 3),
-                BtlEnmyPrmEntry.EnemySkill(0, 4),
-                BtlEnmyPrmEntry.EnemySkill(0, 5),
-                BtlEnmyPrmEntry.EnemySkill(0, 6),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 1),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 2),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 3),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 4),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 5),
+                BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 6),
             ],
             item_drops=[
                 BtlEnmyPrmEntry.ItemDrop(1, 0),
@@ -160,8 +160,8 @@ class TestBtlEnmyPrmEntry(unittest.TestCase):
             exp=2,
             unknown_c=b"\x00\x00",
             level=16,
-            unknown_d=0,
-            unknown_e=0,
+            unknown_d=b"\x00",
+            unknown_e=b"\x00",
             scout_chance=5,
             max_hp=5,
             max_mp=6,
@@ -297,12 +297,12 @@ class TestBtlEnmyPrm(unittest.TestCase):
                     species_id=1,
                     unknown_a=b"\x00\x00\x00\x00\x00\x00",
                     skills=[
-                        BtlEnmyPrmEntry.EnemySkill(0, 1),
-                        BtlEnmyPrmEntry.EnemySkill(0, 2),
-                        BtlEnmyPrmEntry.EnemySkill(0, 3),
-                        BtlEnmyPrmEntry.EnemySkill(0, 4),
-                        BtlEnmyPrmEntry.EnemySkill(0, 5),
-                        BtlEnmyPrmEntry.EnemySkill(0, 6),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 1),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 2),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 3),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 4),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 5),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 6),
                     ],
                     item_drops=[
                         BtlEnmyPrmEntry.ItemDrop(1, 0),
@@ -313,8 +313,8 @@ class TestBtlEnmyPrm(unittest.TestCase):
                     exp=2,
                     unknown_c=b"\x00\x00",
                     level=16,
-                    unknown_d=0,
-                    unknown_e=0,
+                    unknown_d=b"\x00",
+                    unknown_e=b"\x00",
                     scout_chance=5,
                     max_hp=5,
                     max_mp=6,
@@ -337,12 +337,12 @@ class TestBtlEnmyPrm(unittest.TestCase):
                     species_id=1,
                     unknown_a=b"\x00\x00\x00\x00\x00\x00",
                     skills=[
-                        BtlEnmyPrmEntry.EnemySkill(0, 1),
-                        BtlEnmyPrmEntry.EnemySkill(0, 2),
-                        BtlEnmyPrmEntry.EnemySkill(0, 3),
-                        BtlEnmyPrmEntry.EnemySkill(0, 4),
-                        BtlEnmyPrmEntry.EnemySkill(0, 5),
-                        BtlEnmyPrmEntry.EnemySkill(0, 6),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 1),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 2),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 3),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 4),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 5),
+                        BtlEnmyPrmEntry.EnemySkill(b"\x00\x00", 6),
                     ],
                     item_drops=[
                         BtlEnmyPrmEntry.ItemDrop(1, 0),
@@ -353,8 +353,8 @@ class TestBtlEnmyPrm(unittest.TestCase):
                     exp=2,
                     unknown_c=b"\x00\x00",
                     level=16,
-                    unknown_d=0,
-                    unknown_e=0,
+                    unknown_d=b"\x00",
+                    unknown_e=b"\x00",
                     scout_chance=5,
                     max_hp=5,
                     max_mp=6,

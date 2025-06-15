@@ -1,7 +1,7 @@
 [project]
 name = "dqmj1_util"
 version = "0.0.1"
-dependencies = ["ndspy", "pandas", "jinja2"]
+dependencies = ["ndspy", "pandas", "jinja2", "dataclasses-struct>=1.1.0"]
 
 [project.optional-dependencies]
 test = ["mypy==1.15", "ruff==0.11", "pandas-stubs", "pytest", "pytest-cov"]
@@ -16,6 +16,7 @@ packages = ["dqmj1_util", "dqmj1_util._guide", "dqmj1_util.raw", "dqmj1_util.sim
 [tool.mypy]
 strict = true
 exclude = ["build", "docs"]
+plugins = ["dataclasses_struct.ext.mypy_plugin"]
 
 [tool.ruff]
 line-length = 100
