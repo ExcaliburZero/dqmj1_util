@@ -21,6 +21,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 autoclass_content = "both"
 
+autodoc_member_order = "groupwise"
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
