@@ -35,18 +35,18 @@ class SkillSet:
         params["species_learnt_by_ids"] = []
 
         params["rewards"] = []
-        for i in range(0, len(raw.skill_ids)):
+        for i in range(0, len(raw.skills)):
             skill = None
             skill_id = None
             trait = None
             trait_id = None
 
-            if len(raw.skill_ids[i]) > 0:
-                skill_id = raw.skill_ids[i][0]
+            if len(raw.skills[i]) > 0:
+                skill_id = raw.skills[i].skill_ids[0]
                 skill = string_tables.skill_names[skill_id]
 
-            if len(raw.trait_ids[i]) > 0:
-                trait_id = raw.trait_ids[i][0]
+            if len(raw.traits[i]) > 0:
+                trait_id = raw.traits[i].trait_ids[0]
                 trait = string_tables.trait_names[trait_id]
 
             params["rewards"].append(
