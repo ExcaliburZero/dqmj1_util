@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from dqmj1_util._string_tables import StringTables
-from dqmj1_util.raw._skill_tbl import SkillTblEntry
+from dqmj1_util.raw._skill_tbl import SkillTblEntryJp, SkillTblEntryNaEu
 
 
 @dataclass
@@ -26,7 +26,9 @@ class SkillSet:
         trait_id: Optional[int]
 
     @staticmethod
-    def from_raw(skill_set_id: int, raw: SkillTblEntry, string_tables: StringTables) -> SkillSet:
+    def from_raw(
+        skill_set_id: int, raw: SkillTblEntryJp | SkillTblEntryNaEu, string_tables: StringTables
+    ) -> SkillSet:
         params = vars(raw)
         params = {key: value for key, value in params.items() if not key.startswith("unknown")}
 
@@ -34,30 +36,31 @@ class SkillSet:
         params["can_upgrade"] = raw.can_upgrade > 0
         params["species_learnt_by_ids"] = []
 
-        params["rewards"] = []
-        for i in range(0, len(raw.skill_ids)):
+        rewards: list[SkillSet.Reward] = []
+        for i in range(0, raw.num_rewards):
             skill = None
             skill_id = None
             trait = None
             trait_id = None
 
-            if len(raw.skill_ids[i]) > 0:
-                skill_id = raw.skill_ids[i][0]
+            if len(raw.skills[i]) > 0:
+                skill_id = raw.skills[i].skill_ids[0]
                 skill = string_tables.skill_names[skill_id]
 
-            if len(raw.trait_ids[i]) > 0:
-                trait_id = raw.trait_ids[i][0]
+            if len(raw.traits[i]) > 0:
+                trait_id = raw.traits[i].trait_ids[0]
                 trait = string_tables.trait_names[trait_id]
 
-            params["rewards"].append(
+            rewards.append(
                 SkillSet.Reward(
-                    skill_point_requirement=raw.skill_point_requirements[i],
+                    skill_point_requirement=raw.skill_point_requirements[i].points_total,
                     skill=skill,
                     skill_id=skill_id,
                     trait=trait,
                     trait_id=trait_id,
                 )
             )
+        params["rewards"] = rewards
 
         del params["skill_point_requirements"]
         del params["skill_ids"]

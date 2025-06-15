@@ -5,14 +5,14 @@ import io
 import os
 import pathlib
 from collections.abc import Iterable
-from typing import Any, Callable, Generic, Optional, TypeVar
+from typing import Any, Callable, Generic, Optional, TypeVar, cast
 
 import ndspy.rom
 
 from dqmj1_util._region import Region
 from dqmj1_util._string_tables import StringTables
 from dqmj1_util.raw._btl_enmy_prm import BtlEnmyPrm
-from dqmj1_util.raw._skill_tbl import SkillTbl
+from dqmj1_util.raw._skill_tbl import SkillTbl, SkillTblEntryJp, SkillTblEntryNaEu
 from dqmj1_util.simple._encounter import Encounter
 from dqmj1_util.simple._skill import Skill
 from dqmj1_util.simple._skill_set import SkillSet
@@ -196,7 +196,9 @@ class Rom:
 
     def _load_skill_sets(self) -> list[SkillSet]:
         return [
-            SkillSet.from_raw(i, entry, self.string_tables)
+            SkillSet.from_raw(
+                i, cast("SkillTblEntryJp | SkillTblEntryNaEu", entry), self.string_tables
+            )
             for i, entry in enumerate(self.skill_tbl.entries)
         ]
 

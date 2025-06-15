@@ -1,77 +1,114 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import IO, Literal
+from typing import IO, Annotated, Literal, cast
+
+import dataclasses_struct as dcs
 
 from dqmj1_util._region import Region
+from dqmj1_util.raw._util import BinaryReadWriteable
 
 ENDIANESS: Literal["little"] = "little"
 
 
-@dataclass
+class SkillTblEntryBase:
+    can_upgrade: dcs.U8
+    category: dcs.U8
+    max_skill_points: dcs.U8
+    unknown_a: Annotated[bytes, 1]
+    skill_point_requirements: Annotated[list[SkillTblEntry.SkillPointRequirement], 10]
+    skills: Annotated[list[SkillTblEntry.Skills], 10]
+    traits: Annotated[list[SkillTblEntry.Traits], 10]
+    skill_set_id: dcs.U16
+    unknown_b: Annotated[bytes, 2]
+    species_learnt_by: Annotated[list[dcs.U16], 6]
+
+    @property
+    def num_rewards(self) -> int:
+        prev_point_total = 0
+        for i, requirement in enumerate(self.skill_point_requirements):
+            if requirement.points_total == prev_point_total:
+                return i
+
+            prev_point_total = requirement.points_total
+
+        return len(self.skill_point_requirements)
+
+
 class SkillTblEntry:
-    can_upgrade: int
-    category: int
-    max_skill_points: int
-    skill_point_requirements: list[int]
-    skill_ids: list[list[int]]
-    trait_ids: list[list[int]]
-    species_learnt_by: list[int]
+    @dcs.dataclass_struct(size="std", byteorder="little")
+    class SkillPointRequirement:
+        points_delta: dcs.U16
+        points_total: dcs.U16
+
+    @dcs.dataclass_struct(size="std", byteorder="little")
+    class Skills:
+        """
+        Skills learned as a particular skill set reward.
+        Has multiple skill ids if multiple skills are rewarded and/or if the skill has lower level
+        skills that it replaces (ex. Frizzle replacing Frizz).
+        """
+
+        skill_ids: Annotated[list[dcs.U16], 4]
+        """
+        Ids of the skills rewarded at the particular level of the skill set.
+        Has multiple skill ids if multiple skills are rewarded and/or if the skill has lower level
+        skills that it replaces (ex. Frizzle replacing Frizz).
+        Always has four entries. Empty slots are represented by a skill id of 0.
+        """
+
+        unknown_a: Annotated[bytes, 4]
+
+        def __len__(self) -> int:
+            return sum(1 for skill_id in self.skill_ids if skill_id != 0)
+
+    @dcs.dataclass_struct(size="std", byteorder="little")
+    class Traits:
+        """
+        Traits learned as a particular skill set reward.
+        Has multiple trait ids if multiple traits are rewarded and/or if the trait has lower level
+        traits that it replaces.
+        """
+
+        trait_ids: Annotated[list[dcs.U8], 4]
+        """
+        Ids of the traits rewarded at the particular level of the skill set.
+        Has multiple trait ids if multiple traits are rewarded and/or if the trait has lower level
+        traits that it replaces.
+        Always has four entries. Empty slots are represented by a trait id of 0.
+        """
+
+        def __len__(self) -> int:
+            return sum(1 for trait_id in self.trait_ids if trait_id != 0)
 
     @staticmethod
-    def from_bin(input_stream: IO[bytes], region: Region) -> SkillTblEntry:
-        can_upgrade = int.from_bytes(input_stream.read(1))
-        category = int.from_bytes(input_stream.read(1))
-        max_skill_points = int.from_bytes(input_stream.read(1))
-        input_stream.read(1)
+    def from_bin(input_stream: IO[bytes], region: Region) -> SkillTblEntryJp | SkillTblEntryNaEu:
+        if region == Region.Japan:
+            return SkillTblEntryJp.from_bin(input_stream)
+        else:
+            return SkillTblEntryNaEu.from_bin(input_stream)
 
-        skill_point_requirements = []
-        for _ in range(0, 10):
-            input_stream.read(2)
-            skill_point_requirements.append(int.from_bytes(input_stream.read(2), ENDIANESS))
 
-        skill_ids = []
-        for _ in range(0, 10):
-            skill_ids_list = [int.from_bytes(input_stream.read(2), ENDIANESS) for _ in range(0, 4)]
-            skill_ids_list = [i for i in skill_ids_list if i != 0]
+@dcs.dataclass_struct(size="std", byteorder="little")
+class SkillTblEntryJp(SkillTblEntryBase, BinaryReadWriteable):
+    pass
 
-            input_stream.read(4)
 
-            skill_ids.append(skill_ids_list)
-
-        trait_ids = []
-        for _ in range(0, 10):
-            trait_id_list = [int.from_bytes(input_stream.read(1)) for _ in range(0, 4)]
-            trait_id_list = [i for i in trait_id_list if i != 0]
-
-            trait_ids.append(trait_id_list)
-
-        input_stream.read(2)  # Skill set id
-        input_stream.read(2)
-        species_learnt_by = [int.from_bytes(input_stream.read(2), ENDIANESS) for _ in range(0, 6)]
-        species_learnt_by = [i for i in species_learnt_by if i != 0]
-
-        if region != Region.Japan:
-            input_stream.read(20)
-
-        return SkillTblEntry(
-            can_upgrade=can_upgrade,
-            category=category,
-            max_skill_points=max_skill_points,
-            skill_point_requirements=skill_point_requirements,
-            skill_ids=skill_ids,
-            trait_ids=trait_ids,
-            species_learnt_by=species_learnt_by,
-        )
+@dcs.dataclass_struct(size="std", byteorder="little")
+class SkillTblEntryNaEu(SkillTblEntryBase, BinaryReadWriteable):
+    unknown_c: Annotated[bytes, 20]
 
 
 @dataclass
 class SkillTbl:
-    entries: list[SkillTblEntry]
+    entries: list[SkillTblEntryJp] | list[SkillTblEntryNaEu]
 
     @staticmethod
     def from_bin(input_stream: IO[bytes], region: Region) -> SkillTbl:
         input_stream.read(8)
-        entries = [SkillTblEntry.from_bin(input_stream, region) for _ in range(0, 0xC2)]
+        entries = cast(
+            "list[SkillTblEntryJp] | list[SkillTblEntryNaEu]",
+            [SkillTblEntry.from_bin(input_stream, region) for _ in range(0, 0xC2)],
+        )
 
         return SkillTbl(entries)
